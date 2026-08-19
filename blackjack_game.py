@@ -195,15 +195,18 @@ class BlackjackGame:
             case "surrender":
                 self.player_actions.surrender(hand)
                 self.payout.surrenderPayout(hand, player)
-                print(f"Your received half of your bet amount back! ({hand.bet}€)")
+                print(f"Your received half of your bet amount back! ({hand.bet/2}€)")
+                self.player.bankroll.showbalance()
 
             case "double":
                 self.player_actions.double(hand, deck, player)
+                self.player.bankroll.showbalance()
                 print(f"Your new card is {hand.cards[2]}")
                 self.displayPlayerHands(hand)
 
             case "split":
                 new_hand = self.player_actions.split(hand, deck, player)
+                self.player.bankroll.showbalance()
                 print("Your splitted hand now consists of:")
                 self.displayPlayerHands(hand)
                 print("Your new hand now consist of:")
@@ -215,6 +218,7 @@ class BlackjackGame:
             self.player.hands[self.current_hand_index],
             self.player
         )
+        self.player.bankroll.showbalance()
 
         while True:
             place_sidebet = input(
@@ -223,6 +227,7 @@ class BlackjackGame:
 
             if place_sidebet == "y":
                 self.player_actions.chooseSidebet(self.player)
+                self.player.bankroll.showbalance()
                 break
 
             elif place_sidebet == "n":
@@ -273,7 +278,7 @@ class BlackjackGame:
             print(f"{self.player.hands.index(hand) + 1}. Hand:")
             print(hand.result)
         self.payout.defaultPayout(self.player)
-        print(f"Your balance is {self.player.bankroll.balance}")
+        self.player.bankroll.showbalance()
 
     def handleInitialBlackjack(self, player_blackjack, dealer_blackjack):
         if dealer_blackjack and not player_blackjack:
@@ -292,6 +297,7 @@ class BlackjackGame:
             self.player.hands[0],
             self.player
         )
+        self.player.bankroll.showbalance()
 
 
     def displayPlayerHands(self, hand):

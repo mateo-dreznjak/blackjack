@@ -15,6 +15,7 @@ class PlayerActions:
     def surrender(self, hand):
         hand.surrendered = True
         hand.done = True
+        hand.result = "surrender"
 
     def double(self, hand, deck, player):
         additional_bet = hand.bet
