@@ -105,12 +105,9 @@ class BlackjackGame:
         self.player.hands[0].addCard(self.deck.drawCard())
         self.dealer.hand.addCard(self.deck.drawCard())
 
-        print(
-            f"Your cards are {self.player.hands[0].cards[0]} and "
-            f"{self.player.hands[0].cards[1]}, the dealer card is "
-            f"{self.dealer.hand.cards[0]}"
-        )
-        self.displayPlayerHands(self.player.hands[self.current_hand_index])
+        self.displayPlayerHands(self.player.hands[0])
+        self.displayDealerHand(self.dealer.hand, True)
+
 
     def playPlayerHands(self):
 
@@ -137,24 +134,6 @@ class BlackjackGame:
                     self.deck,
                     self.player
                 )
-                match choice:
-                    case "hit":
-                        pass
-                    case "stand":
-                        pass
-                    case "surrender":
-                        pass
-                    case "double":
-                        print(f"Your new card is {hand.cards[2]}")
-                        self.displayPlayerHands(hand)
-                    case "split":
-                        print("Your splitted hand now consists of:")
-                        self.displayPlayerHands(self.player.hands[self.current_hand_index])
-                        print("Your new hand now consist of:")
-                        self.displayPlayerHands(self.player.hands[self.current_hand_index+1])
-
-                    case _:
-                        print("Not even possible")
 
             self.current_hand_index += 1
 
@@ -200,20 +179,31 @@ class BlackjackGame:
 
         match choice:
             case "hit":
+                temp_current_hand_length = len(hand.cards)-1
                 self.player_actions.hit(hand, deck)
+                print(f"Your new card is {hand.cards[temp_current_hand_length +1]}")
+                print("Your hand now consists of:")
+                self.displayPlayerHands(hand)
 
             case "stand":
                 self.player_actions.stand(hand)
 
             case "surrender":
-                self.player_actions.surrender(hand, player)
+                self.player_actions.surrender(hand)
                 self.payout.surrenderPayout(hand, player)
+                print(f"Your received half of your bet amount back! ({hand.bet}€)")
 
             case "double":
                 self.player_actions.double(hand, deck, player)
+                print(f"Your new card is {hand.cards[2]}")
+                self.displayPlayerHands(hand)
 
             case "split":
-                self.player_actions.split(hand, deck, player)
+                new_hand = self.player_actions.split(hand, deck, player)
+                print("Your splitted hand now consists of:")
+                self.displayPlayerHands(hand)
+                print("Your new hand now consist of:")
+                self.displayPlayerHands(new_hand)
 
     def mainGameLoop(self):
 
@@ -238,8 +228,9 @@ class BlackjackGame:
         self.initialCardDeal()
 
         self.outcome_eval.sidebetEval(self.player, self.dealer)
-        if any(sidebet.win for sidebet in self.player.sidebets):
-            print("Sidebet win!")
+        for sidebet in self.player.sidebets:
+            if sidebet.win:
+                print(f"The {sidebet.sidebet_type} sidebet won!")
         self.payout.sidebetPayout(self.player)
 
         # Insurance Frage + check + payout
@@ -305,10 +296,15 @@ class BlackjackGame:
             print(f"{hand.cards.index(card)+1}. {card}")
         print(f"Your total is {hand.total}")
 
-    def displayDealerHand(self, hand):
-        print("Dealer cards are: ")
-        for card in hand.cards:
-            print(f"{hand.cards.index(card)+1}. {card}")
-        print(f"Dealer total is {hand.total}")
+    def displayDealerHand(self, hand, initial_card_deal = False):
+        if not initial_card_deal:
+            print("Dealer cards are: ")
+            for card in hand.cards:
+                print(f"{hand.cards.index(card)+1}. {card}")
+            print(f"Dealer total is {hand.total}")
+        else:
+            print("The Dealer shows: ")
+            print(f"1. {hand.cards[0]}")
+
 
     #

@@ -7,7 +7,7 @@ class PlayerActions:
     def hit(self, hand, deck):
         new_card = deck.drawCard()
         hand.addCard(new_card)
-        print(f"Your new card is the {new_card}")
+
 
     def stand(self, hand):
         hand.done = True
@@ -54,6 +54,7 @@ class PlayerActions:
             hand.splitted_aces = True
             new_hand.done = True
             new_hand.splitted_aces = True
+        return new_hand
 
     def placeMainBet(self, hand, player):
         while True:

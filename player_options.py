@@ -1,16 +1,16 @@
 class PlayerOptions:
 
     def listPlayerOptions(self, player, hand):
-        if hand.done == False:
-            can_surrender = self.surrenderEval(player, hand)
-            can_double = self.doubleEval(player, hand)
-            can_split = self.splitEval(player, hand)
-            options_list = self.createList(
-                can_surrender,
-                can_double,
-                can_split
-            )
-            return options_list
+
+        can_surrender = self.surrenderEval(player, hand)
+        can_double = self.doubleEval(player, hand)
+        can_split = self.splitEval(player, hand)
+        options_list = self.createList(
+            can_surrender,
+            can_double,
+            can_split
+        )
+        return options_list
 
     def surrenderEval(self, player, hand):
         return (

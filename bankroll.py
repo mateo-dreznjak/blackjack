@@ -27,4 +27,3 @@ class Bankroll:
         return amount <= self.balance
 
 
-        return True
