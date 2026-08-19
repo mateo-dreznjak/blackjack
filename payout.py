@@ -58,3 +58,6 @@ class Payout:
 
                     case _:
                         print("Unknown SideBet winning type")
+
+    def insurance_payout(self, player):
+        player.bankroll.depositAmount(player.insurance_amount * 3)

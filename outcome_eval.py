@@ -178,4 +178,9 @@ class OutcomeEval:
             aces -= 1
 
         return total
+
+    def evaluate_insurance(self, player, dealer):
+        if dealer.hand.cards[0].rank == "A" and dealer.hand.cards[1].value == 10:
+            return True
+        return False
     

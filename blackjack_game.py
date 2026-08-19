@@ -243,14 +243,30 @@ class BlackjackGame:
         self.payout.sidebetPayout(self.player)
 
         # Insurance Frage + check + payout
+        if self.insurance_allowed(self.dealer.hand):
+            while True:
+                take_insurance = input(
+                    "You want to take insurance? (y/n): "
+                ).lower()
+
+                if take_insurance == "y":
+                    self.player_actions.take_insurance(self.player)
+                    print("Insurance taken!")
+                    self.player.bankroll.showbalance()
+                    break
+
+                elif take_insurance == "n":
+                    print("No insurance taken.")
+                    break
 
         player_blackjack, dealer_blackjack = self.outcome_eval.evaluateBlackjack(
             self.player.hands[0],
             self.dealer.hand
         )
 
+
+
         if player_blackjack or dealer_blackjack:
-            print("Blackjack!")
             self.handleInitialBlackjack(
                 player_blackjack,
                 dealer_blackjack
@@ -283,12 +299,19 @@ class BlackjackGame:
     def handleInitialBlackjack(self, player_blackjack, dealer_blackjack):
         if dealer_blackjack and not player_blackjack:
             print("The dealer has a blackjack!")
-            print("You lose")
+            sleep(1)
+            if self.player.insurance_amount > 0 and self.outcome_eval.evaluate_insurance(self.player, self.dealer):
+                print("Insurance has won.")
+                self.payout.insurance_payout(self.player)
+            else:
+                print("You lose")
         elif not dealer_blackjack and player_blackjack:
             print("You have blackjack!")
+            sleep(1)
             print("You win")
         else:
             print("You both have blackjack!")
+            sleep(1)
             print("Push")
 
         self.payout.blackjackPayout(
@@ -317,4 +340,7 @@ class BlackjackGame:
             print(f"1. {hand.cards[0]}")
 
 
-    #
+    def insurance_allowed(self, dealer_hand):
+        if dealer_hand.cards[0].rank == "A":
+            return True
+        return False

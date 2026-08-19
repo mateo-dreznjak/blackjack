@@ -147,3 +147,7 @@ class PlayerActions:
         new_sidebet = SideBet(amount, sidebet_type)
         player.bankroll.withdrawAmount(amount)
         player.sidebets.append(new_sidebet)
+
+    def take_insurance(self, player):
+        player.bankroll.withdrawAmount(player.hands[0].bet / 2)
+        player.insurance_amount = player.hands[0].bet / 2
