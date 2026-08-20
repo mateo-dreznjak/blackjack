@@ -5,3 +5,4 @@ class SideBet:
         self.sidebet_type = sidebet_type
         self.win = False
         self.winning_type = None
+        self.win_multiplier = 0

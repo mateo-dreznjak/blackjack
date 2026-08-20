@@ -37,10 +37,10 @@ class OutcomeEval:
     def sidebetEval(self, player, dealer):
         for sidebet in player.sidebets:
             if sidebet.sidebet_type == "poker":
-                sidebet.win = self.evaluatePokerSB(player, dealer)
+                sidebet.win, sidebet.win_multiplier = self.evaluatePokerSB(player, dealer)
 
             elif sidebet.sidebet_type == "special":
-                sidebet.winning_type = self.evaluateSpecialSB(player, dealer)
+                sidebet.winning_type, sidebet.win_multiplier = self.evaluateSpecialSB(player, dealer)
 
                 if sidebet.winning_type is not None:
                     sidebet.win = True
@@ -95,7 +95,8 @@ class OutcomeEval:
             and all(card.suit == relevant_cards[0].suit for card in relevant_cards)
         ):
             winning_type = "suited777"
-            return winning_type
+            win_multiplier = 201
+            return winning_type, win_multiplier
 
         elif (
             any(card.rank == "6" for card in relevant_cards)
@@ -104,11 +105,14 @@ class OutcomeEval:
             and all(card.suit == relevant_cards[0].suit for card in relevant_cards)
         ):
             winning_type = "suited678"
-            return winning_type
+            win_multiplier = 101
+            return winning_type, win_multiplier
 
         elif all(card.rank == "7" for card in relevant_cards):
+
             winning_type = "unsuited777"
-            return winning_type
+            win_multiplier = 51
+            return winning_type, win_multiplier
 
         elif (
             any(card.rank == "6" for card in relevant_cards)
@@ -116,26 +120,32 @@ class OutcomeEval:
             and any(card.rank == "8" for card in relevant_cards)
         ):
             winning_type = "unsuited678"
-            return winning_type
+            win_multiplier = 31
+            return winning_type, win_multiplier
 
         elif (
             relevant_card_total == 21
             and all(card.suit == relevant_cards[0].suit for card in relevant_cards)
         ):
             winning_type = "suited21"
-            return winning_type
+            win_multiplier = 11
+            return winning_type, win_multiplier
 
         elif relevant_card_total == 21:
             winning_type = "unsuited21"
-            return winning_type
+            win_multiplier = 4
+            return winning_type, win_multiplier
 
         elif relevant_card_total == 20:
+
             winning_type = "any20"
-            return winning_type
+            win_multiplier = 3
+            return winning_type, win_multiplier
 
         elif relevant_card_total == 19:
             winning_type = "any19"
-            return winning_type
+            win_multiplier = 3
+            return winning_type, win_multiplier
 
         else:
             return None
@@ -149,14 +159,10 @@ class OutcomeEval:
 
         win = self.evaluateStraight(relevant_cards)
 
-        if win:
-            return True
-
-        elif all(card.suit == relevant_cards[0].suit for card in relevant_cards):
-            return True
-
-        elif all(card.rank == relevant_cards[0].rank for card in relevant_cards):
-            return True
+        if (win
+            or all(card.suit == relevant_cards[0].suit for card in relevant_cards)
+            or all(card.rank == relevant_cards[0].rank for card in relevant_cards)):
+            return True, 10 # 10 is the win_multiplier for all poker side bets
 
         else:
             return False
