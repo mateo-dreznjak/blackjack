@@ -26,5 +26,3 @@ class Bankroll:
     def canBet(self, amount):
         return amount <= self.balance
 
-    def showbalance(self):
-        print(f"Your balance is now {self.balance}€")

@@ -148,7 +148,7 @@ class OutcomeEval:
             return winning_type, win_multiplier
 
         else:
-            return None
+            return None, 0
 
     def evaluatePokerSB(self, player, dealer):
         relevant_cards = [
@@ -165,7 +165,7 @@ class OutcomeEval:
             return True, 10 # 10 is the win_multiplier for all poker side bets
 
         else:
-            return False
+            return False, 0
 
     def calculateRelevantCardsTotal(self, relevant_cards):
         aces = 0

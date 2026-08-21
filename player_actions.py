@@ -79,7 +79,7 @@ class PlayerActions:
 
         hand.bet = amount
         player.bankroll.withdrawAmount(amount)
-        print(f"Your bet of {amount} has been placed!")
+        
 
     def chooseSidebet(self, player):
         if player.bankroll.balance >= 5:
