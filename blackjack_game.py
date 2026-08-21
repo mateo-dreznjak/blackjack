@@ -255,9 +255,13 @@ class BlackjackGame:
                 ).lower()
 
                 if take_insurance == "y":
-                    self.player_actions.take_insurance(self.player)
-                    self.bet_output_handler(self.player, "insurance")
-                    break
+                    if self.player.bankroll.canBet(self.player.hands[0].bet / 2):
+                        self.player_actions.take_insurance(self.player)
+                        self.bet_output_handler(self.player, "insurance")
+                        break
+                    else:
+                        print("Not enough money to take insurance.")
+                        break
 
                 elif take_insurance == "n":
                     print("No insurance taken.")
@@ -276,6 +280,9 @@ class BlackjackGame:
                 dealer_blackjack
             )
             return
+        if self.player.insurance_amount > 0:
+            print("No dealer Blackjack!")
+            print("Insurance lost!")
 
         self.playPlayerHands()
 
