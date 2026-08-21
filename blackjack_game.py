@@ -145,7 +145,7 @@ class BlackjackGame:
             new_card = self.deck.drawCard()
             print(f"The new dealer card is {new_card}")
             dealer.hand.addCard(new_card)
-            print(f"Debug: Hand total is {dealer.hand.total}")
+
             sleep(DELAY)
 
         if dealer.hand.total == 17 and dealer.hand.aces > 0:
@@ -158,14 +158,14 @@ class BlackjackGame:
                 print(f"The new dealer card is {new_card}")
                 dealer.hand.addCard(new_card)
                 self.displayDealerHand(dealer.hand)
-                print(f"Debug: Hand total is {dealer.hand.total}")
+
                 sleep(DELAY)
                 while dealer.hand.total < 17:
                     new_card = self.deck.drawCard()
                     print(f"The new dealer card is {new_card}")
                     dealer.hand.addCard(new_card)
                     self.displayDealerHand(dealer.hand)
-                    print(f"Debug: Hand total is {dealer.hand.total}")
+                    
                     sleep(DELAY)
 
     def displayPlayerOptions(self, player, hand):
