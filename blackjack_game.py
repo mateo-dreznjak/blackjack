@@ -9,6 +9,7 @@ from player_actions import PlayerActions
 from outcome_eval import OutcomeEval
 from payout import Payout
 from time import sleep
+DELAY = 0
 
 
 class BlackjackGame:
@@ -139,31 +140,33 @@ class BlackjackGame:
 
     def playDealerHand(self, dealer):
         self.displayDealerHand(dealer.hand)
+        sleep(DELAY)
         while dealer.hand.total < 17:
             new_card = self.deck.drawCard()
             print(f"The new dealer card is {new_card}")
             dealer.hand.addCard(new_card)
             print(f"Debug: Hand total is {dealer.hand.total}")
-            sleep(1)
+            sleep(DELAY)
 
         if dealer.hand.total == 17 and dealer.hand.aces > 0:
             hasSoft17 = dealer.hand.soft17Check()
 
             if hasSoft17:
                 print("The dealer has a soft-17 hand.")
+                sleep(DELAY)
                 new_card = self.deck.drawCard()
                 print(f"The new dealer card is {new_card}")
                 dealer.hand.addCard(new_card)
                 self.displayDealerHand(dealer.hand)
                 print(f"Debug: Hand total is {dealer.hand.total}")
-                sleep(1)
+                sleep(DELAY)
                 while dealer.hand.total < 17:
                     new_card = self.deck.drawCard()
                     print(f"The new dealer card is {new_card}")
                     dealer.hand.addCard(new_card)
                     self.displayDealerHand(dealer.hand)
                     print(f"Debug: Hand total is {dealer.hand.total}")
-                    sleep(1)
+                    sleep(DELAY)
 
     def displayPlayerOptions(self, player, hand):
 
@@ -186,6 +189,7 @@ class BlackjackGame:
                 temp_current_hand_length = len(hand.cards)-1
                 self.player_actions.hit(hand, deck)
                 print(f"Your new card is {hand.cards[temp_current_hand_length +1]}")
+                sleep(DELAY)
                 print("Your hand now consists of:")
                 self.displayPlayerHands(hand)
 
@@ -202,6 +206,7 @@ class BlackjackGame:
                 self.bet_output_handler(player, "double", hand)
                 self.player_actions.double(hand, deck, player)
                 print(f"Your new card is {hand.cards[2]}")
+                sleep(DELAY)
                 self.displayPlayerHands(hand)
 
             case "split":
@@ -291,7 +296,7 @@ class BlackjackGame:
         # ergebnisse print
         for hand in self.player.hands:
             print(f"{self.player.hands.index(hand) + 1}. Hand")
-            sleep(1)
+            sleep(DELAY)
             print(f"Result: {hand.result.capitalize()}")
             print()
         self.payout.defaultPayout(self.player)
@@ -301,7 +306,7 @@ class BlackjackGame:
     def handleInitialBlackjack(self, player_blackjack, dealer_blackjack):
         if dealer_blackjack and not player_blackjack:
             print("The dealer has a blackjack!")
-            sleep(1)
+            sleep(DELAY)
             if self.player.insurance_amount > 0 and self.outcome_eval.evaluate_insurance(self.player, self.dealer):
                 self.payout.insurance_payout(self.player)
                 self.payout_output_handler(self.player, "insurance")
@@ -350,9 +355,9 @@ class BlackjackGame:
                 for hand in player.hands:
                     if hand.result == "win":
                         print(f"{player.hands.index(hand) + 1}. Hand has won!")
-                        sleep(1)
+                        sleep(DELAY)
                         print(f"You receive {hand.bet}€")
-                        sleep(1)
+                        sleep(DELAY)
                 self.display_balance(player)
 
             case "side_bet":
@@ -363,25 +368,25 @@ class BlackjackGame:
                             print(f"({sidebet.winning_type})")
                         else:
                             print()
-                        sleep(1)
+                        sleep(DELAY)
                         print(f"You receive {sidebet.amount * sidebet.win_multiplier}€")
-                        sleep(1)
+                        sleep(DELAY)
                 self.display_balance(player)
 
             case "blackjack":
                 if not dealer_blackjack and player_blackjack:
                     print("You have blackjack!")
-                    sleep(1)
+                    sleep(DELAY)
                     print(f"You receive {player.hands[0].bet * 2.5}€")
-                    sleep(1)
+                    sleep(DELAY)
                     self.display_balance(player)
 
                 elif dealer_blackjack and player_blackjack:
                     print("You both have blackjack!")
                     print("Push!")
-                    sleep(1)
+                    sleep(DELAY)
                     print(f"You receive your bet back ({player.hands[0].bet}€)")
-                    sleep(1)
+                    sleep(DELAY)
                     self.display_balance(player)
 
             case "insurance":
@@ -391,31 +396,31 @@ class BlackjackGame:
 
             case "surrender":
                 print(f"Your receive half of your bet back! ({player.hands[0].bet/2}€)")
-                sleep(1)
+                sleep(DELAY)
                 self.display_balance(player)
 
     def bet_output_handler(self, player, bet_type, hand = None):
         match bet_type:
             case "main_bet":
                 print(f"Your bet of {hand.bet}€ has been placed!")
-                sleep(1)
+                sleep(DELAY)
                 self.display_balance(player)
             case "side_bet":
                 for sidebet in player.sidebets:
                     print(f"Your bet of {sidebet.amount}€ has been placed for the {sidebet.sidebet_type} sidebet!")
-                    sleep(1)
+                    sleep(DELAY)
                 self.display_balance(player)
             case "double":
                 print(f"Your bet ({hand.bet}€) has been doubled!")
-                sleep(1)
+                sleep(DELAY)
                 self.display_balance(player)
             case "split":
                 print(f"Your split bet ({hand.bet}€) has been placed!")
-                sleep(1)
+                sleep(DELAY)
                 self.display_balance(player)
             case "insurance":
                 print(f"You have taken insurance ({player.insurance_amount}€)!")
-                sleep(1)
+                sleep(DELAY)
                 self.display_balance(player)
             case _:
                 pass
