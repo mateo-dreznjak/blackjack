@@ -211,12 +211,18 @@ class BlackjackGame:
                 self.displayPlayerHands(hand)
 
             case "split":
-                self.bet_output_handler(player, "split", hand)
                 new_hand = self.player_actions.split(hand, deck, player)
+
+                self.bet_output_handler(player, "split", hand)
+                if hand.splitted_aces:
+                    print("You have splitted aces!")
                 print("Your splitted hand now consists of:")
                 self.displayPlayerHands(hand)
                 print("Your new hand now consist of:")
                 self.displayPlayerHands(new_hand)
+                if hand.splitted_aces:
+                    print("Both hands are now finished!")
+
 
     def mainGameLoop(self):
 
