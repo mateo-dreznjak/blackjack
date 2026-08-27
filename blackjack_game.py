@@ -317,13 +317,13 @@ class BlackjackGame:
 
 
     def handleInitialBlackjack(self, player_blackjack, dealer_blackjack):
-        if dealer_blackjack and not player_blackjack:
+        if dealer_blackjack:
             print("The dealer has a blackjack!")
             sleep(DELAY)
             if self.player.insurance_amount > 0 and self.outcome_eval.evaluate_insurance(self.player, self.dealer):
                 self.payout.insurance_payout(self.player)
                 self.payout_output_handler(self.player, "insurance")
-            else:
+            elif not player_blackjack:
                 print("You lose")
                 sleep(DELAY)
                 self.display_balance(self.player)
