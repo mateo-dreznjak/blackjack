@@ -60,7 +60,7 @@ class BlackjackGame:
                 print("Not a valid input!")
 
         self.player.bankroll = Bankroll(self.starting_amount)
-        print(f"You now have {self.player.bankroll.balance}€ as your starting balance.")
+        print(f"You now have {self.player.bankroll.balance:.2f}€ as your starting balance.")
 
     def gameHandler(self):
         print("Game Initialization")
@@ -369,7 +369,7 @@ class BlackjackGame:
             case "main_bet":
                 for hand in player.hands:
                     if hand.result == "win":
-                        print(f"{player.hands.index(hand) + 1}. Hand receives {hand.bet*2}€!")
+                        print(f"{player.hands.index(hand) + 1}. Hand receives {hand.bet*2:.2f}€!")
                         sleep(DELAY)
                 self.display_balance(player)
 
@@ -382,14 +382,14 @@ class BlackjackGame:
                         else:
                             print()
                         sleep(DELAY)
-                        print(f"You receive {sidebet.amount * sidebet.win_multiplier}€")
+                        print(f"You receive {sidebet.amount * sidebet.win_multiplier:.2f}€")
                 self.display_balance(player)
 
             case "blackjack":
                 if not dealer_blackjack and player_blackjack:
                     print("You have blackjack!")
                     sleep(DELAY)
-                    print(f"You receive {player.hands[0].bet * 2.5}€")
+                    print(f"You receive {player.hands[0].bet * 2.5:.2f}€")
                     sleep(DELAY)
                     self.display_balance(player)
 
@@ -397,39 +397,39 @@ class BlackjackGame:
                     print("You both have blackjack!")
                     print("Push!")
                     sleep(DELAY)
-                    print(f"You receive your bet back ({player.hands[0].bet}€)")
+                    print(f"You receive your bet back ({player.hands[0].bet:.2f}€)")
                     sleep(DELAY)
                     self.display_balance(player)
 
             case "insurance":
                 print("Insurance has won!")
-                print(f"You received {player.insurance_amount * 3}€")
+                print(f"You received {player.insurance_amount * 3:.2f}€")
                 self.display_balance(player)
 
             case "surrender":
-                print(f"Your receive half of your bet back! ({player.hands[0].bet/2}€)")
+                print(f"Your receive half of your bet back! ({player.hands[0].bet/2:.2f}€)")
                 #sleep(DELAY)
                 self.display_balance(player)
 
     def bet_output_handler(self, player, bet_type, hand = None):
         match bet_type:
             case "main_bet":
-                print(f"Your bet of {hand.bet}€ has been placed!")
+                print(f"Your bet of {hand.bet:.2f}€ has been placed!")
                 self.display_balance(player)
             case "side_bet":
                 for sidebet in player.sidebets:
-                    print(f"Your bet of {sidebet.amount}€ has been placed for the {sidebet.sidebet_type} sidebet!")
+                    print(f"Your bet of {sidebet.amount:.2f}€ has been placed for the {sidebet.sidebet_type} sidebet!")
                 #sleep(DELAY)
                 self.display_balance(player)
             case "double":
-                print(f"Your bet ({hand.bet/2}€) has been doubled!")
+                print(f"Your bet ({hand.bet/2:.2f}€) has been doubled!")
                 self.display_balance(player)
             case "split":
-                print(f"Your split bet ({hand.bet}€) has been placed!")
+                print(f"Your split bet ({hand.bet:.2f}€) has been placed!")
                 sleep(DELAY)
                 self.display_balance(player)
             case "insurance":
-                print(f"You have taken insurance ({player.insurance_amount}€)!")
+                print(f"You have taken insurance ({player.insurance_amount:.2f}€)!")
                 self.display_balance(player)
                 sleep(DELAY)
             case _:
@@ -437,4 +437,4 @@ class BlackjackGame:
 
 
     def display_balance(self, player):
-        print(f"Your balance is now {player.bankroll.balance}€")
+        print(f"Your balance is now {player.bankroll.balance:.2f}€")
