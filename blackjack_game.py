@@ -279,7 +279,9 @@ class BlackjackGame:
             self.dealer.hand
         )
 
-
+        if self.player.insurance_amount > 0 and not dealer_blackjack:
+            print("No dealer Blackjack!")
+            print("Insurance lost!")
 
         if player_blackjack or dealer_blackjack:
             self.handleInitialBlackjack(
@@ -287,9 +289,7 @@ class BlackjackGame:
                 dealer_blackjack
             )
             return
-        if self.player.insurance_amount > 0:
-            print("No dealer Blackjack!")
-            print("Insurance lost!")
+
 
         self.playPlayerHands()
 
