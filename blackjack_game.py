@@ -316,10 +316,9 @@ class BlackjackGame:
             if self.player.insurance_amount > 0 and self.outcome_eval.evaluate_insurance(self.player, self.dealer):
                 self.payout.insurance_payout(self.player)
                 self.payout_output_handler(self.player, "insurance")
-            elif not player_blackjack:
-                print("You lose")
-                sleep(DELAY)
-                self.display_balance(self.player)
+            if not player_blackjack:
+                print("Main bet lost!")
+
 
 
 
