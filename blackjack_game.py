@@ -254,7 +254,7 @@ class BlackjackGame:
             self.payout_output_handler(self.player, "side_bet")
 
 
-        # Insurance Frage + check + payout
+       
         if self.insurance_allowed(self.dealer.hand):
             while True:
                 take_insurance = input(
@@ -296,18 +296,10 @@ class BlackjackGame:
         if any(hand.result is None for hand in self.player.hands):
             self.playDealerHand(self.dealer)
 
-        ##################################################################
-        print(f"DEBUG dealer: total={self.dealer.hand.total} "
-              f"bust={self.dealer.hand.bust} "
-              f"cards={[str(c) for c in self.dealer.hand.cards]}")
 
-        for hand in self.player.hands:
-            print(f"DEBUG hand: total={hand.total} bust={hand.bust} "
-                  f"result={hand.result}")
-        ##################################################################
 
         self.outcome_eval.evaluate(self.player, self.dealer)
-        # ergebnisse print
+
         for hand in self.player.hands:
             print(f"{self.player.hands.index(hand) + 1}. Hand")
             print(f"Result: {hand.result.capitalize()}")
