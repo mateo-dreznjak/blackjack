@@ -9,7 +9,7 @@ from player_actions import PlayerActions
 from outcome_eval import OutcomeEval
 from payout import Payout
 from time import sleep
-DELAY = 0
+DELAY = 2
 
 
 class BlackjackGame:
@@ -106,7 +106,7 @@ class BlackjackGame:
         self.dealer.hand.addCard(self.deck.drawCard())
 
         self.displayPlayerHands(self.player.hands[0])
-        sleep(DELAY)
+        sleep(DELAY/2)
         self.displayDealerHand(self.dealer.hand, True)
 
 
@@ -141,12 +141,13 @@ class BlackjackGame:
 
     def playDealerHand(self, dealer):
         self.displayDealerHand(dealer.hand)
-        sleep(DELAY)
+        sleep(DELAY/4)
         while dealer.hand.total < 17:
             new_card = self.deck.drawCard()
+            sleep(DELAY/2)
             print(f"The new dealer card is {new_card}")
             dealer.hand.addCard(new_card)
-            sleep(DELAY)
+            sleep(DELAY/3)
             self.displayDealerHand(dealer.hand)
 
         if dealer.hand.total == 17 and dealer.hand.aces > 0:
@@ -254,7 +255,7 @@ class BlackjackGame:
             self.payout_output_handler(self.player, "side_bet")
 
 
-       
+
         if self.insurance_allowed(self.dealer.hand):
             while True:
                 take_insurance = input(
@@ -299,7 +300,7 @@ class BlackjackGame:
 
 
         self.outcome_eval.evaluate(self.player, self.dealer)
-
+        sleep(DELAY/2)
         for hand in self.player.hands:
             print(f"{self.player.hands.index(hand) + 1}. Hand")
             print(f"Result: {hand.result.capitalize()}")
